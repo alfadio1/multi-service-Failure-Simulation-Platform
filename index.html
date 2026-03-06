@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Multi-Service Failure Simulation Platform</title>
+</head>
+<body>
+
+<h1>Behind the Scenes of Building a Multi-Service Failure Simulation Platform to Understand System Reliability</h1>
+
+<p>When we open an app like Uber, Netflix, or Amazon, everything appears to work instantly.</p>
+
+<p>You request a ride.<br>
+You stream a movie.<br>
+You place an order.</p>
+
+<p>But behind the scenes, these platforms are not a single application. They are made of <strong>many smaller services working together</strong>.</p>
+
+<p>And those services fail all the time.</p>
+
+<p>So the real question engineers face is not:</p>
+
+<p>“How do we prevent failure?”</p>
+
+<p>Instead, the question becomes:</p>
+
+<p>“How do we design systems that continue working even when parts of them fail?”</p>
+
+<p>To better understand this idea, I built a small learning project called a <strong>Multi-Service Failure Simulation Platform</strong>.</p>
+
+<p>The goal of the project was simple: simulate failures in a distributed system and observe how the system reacts.</p>
+
+<hr>
+
+<h1>What Is a “Service” in Simple Terms?</h1>
+
+<p>Before diving into the project, it helps to understand what a <strong>service</strong> actually is.</p>
+
+<p>A service is simply a small program responsible for one specific task.</p>
+
+<p>For example, in a ride-sharing app like Uber, there might be separate services for:</p>
+
+<ul>
+<li>ride requests</li>
+<li>pricing calculations</li>
+<li>payments</li>
+<li>notifications</li>
+</ul>
+
+<p>Instead of one large program doing everything, each service handles its own responsibility.</p>
+
+<p>This architecture is called <strong>microservices</strong>, and it allows large applications to scale and evolve more easily.</p>
+
+<p>However, it also introduces a challenge:</p>
+
+<p>If one service fails, the others might also fail.</p>
+
+<hr>
+
+<h1>The Architecture of the Project</h1>
+
+<p>The project simulates a simplified distributed system made of several services that call each other.</p>
+
+<p>The request flow looks like this:</p>
+
+<p>Client → Core API → Service A → Service B → Chaos Service</p>
+
+<p>Each component represents a layer in a real distributed system.</p>
+
+<hr>
+
+<h1>Core API: The System Entry Point</h1>
+
+<p>The <strong>Core API</strong> is the entry point of the system.</p>
+
+<p>It represents the backend service that first receives a request from a user.</p>
+
+<p>In a real application like Uber, this might be similar to the <strong>Ride Service</strong>, which receives ride requests from users.</p>
+
+<p>When a request arrives, the Core API calls another service called <strong>Service A</strong>.</p>
+
+<p>But instead of making a simple request, the call is protected with two important resilience mechanisms:</p>
+
+<p><strong>Retry</strong><br>
+If a request fails, the system automatically tries again.</p>
+
+<p><strong>Circuit Breaker</strong><br>
+If failures continue, the system temporarily stops calling the failing service to avoid overloading it.</p>
+
+<p>These techniques help systems stay stable even when dependencies become unreliable.</p>
+
+<hr>
+
+<h1>Service A: The Business Logic Layer</h1>
+
+<p>Service A represents a business logic service, such as a payment or pricing service.</p>
+
+<p>Its job is to process the request and call another service called <strong>Service B</strong>.</p>
+
+<p>Just like the Core API, this service also uses retries and circuit breakers.</p>
+
+<p>Why?</p>
+
+<p>Because in distributed systems, failures often happen in downstream dependencies.</p>
+
+<p>For example, imagine Uber trying to charge a credit card:</p>
+
+<ul>
+<li>the first request might fail</li>
+<li>the system retries automatically</li>
+<li>if the bank keeps failing, the system stops calling it</li>
+</ul>
+
+<p>This prevents a failing service from bringing down the entire system.</p>
+
+<hr>
+
+<h1>Service B: Simulating an External Dependency</h1>
+
+<p>Service B represents a dependency that the system relies on but does not control.</p>
+
+<p>In real life, this could be something like:</p>
+
+<ul>
+<li>a bank API</li>
+<li>a payment gateway</li>
+<li>a third-party service</li>
+</ul>
+
+<p>Because these systems are external, they can fail unpredictably.</p>
+
+<p>In this project, Service B calls another service called the <strong>Chaos Service</strong>, which is responsible for injecting failures.</p>
+
+<hr>
+
+<h1>Chaos Service: Simulating Real Production Failures</h1>
+
+<p>The Chaos Service intentionally introduces failures into the system.</p>
+
+<p>This allows the system to be tested under different conditions.</p>
+
+<p>For example:</p>
+
+<p>0% failure<br>
+Everything works normally.</p>
+
+<p>30% failure<br>
+Some requests fail while others succeed.</p>
+
+<p>100% failure<br>
+The dependency is completely unavailable.</p>
+
+<p>These scenarios mimic real-world conditions where systems may be partially degraded or fully down.</p>
+
+<p>By injecting failures, we can observe how the system responds.</p>
+
+<hr>
+
+<h1>Observability: Seeing What Happens Inside the System</h1>
+
+<p>To understand how the system behaves during failures, I integrated <strong>Prometheus and Grafana</strong>.</p>
+
+<p>Prometheus collects metrics such as:</p>
+
+<ul>
+<li>number of retries</li>
+<li>request rates</li>
+<li>circuit breaker states</li>
+</ul>
+
+<p>Grafana then visualizes those metrics in dashboards.</p>
+
+<p>This makes it possible to see patterns such as retry spikes or circuit breakers opening when a service becomes unreliable.</p>
+
+<p>In real engineering teams, dashboards like these are critical for diagnosing production incidents.</p>
+
+<hr>
+
+<h1>Simulating Traffic with Load Testing</h1>
+
+<p>To make the system behave more realistically, I used a tool called <strong>k6</strong> to simulate multiple requests being sent to the system.</p>
+
+<p>This helps demonstrate how the system behaves under real traffic instead of a single request.</p>
+
+<p>When failures are injected, you can observe how retries increase and how the circuit breaker eventually protects the system from further calls.</p>
+
+<hr>
+
+<h1>What Is there to Learn from This Project?</h1>
+
+<p>Building this project helps to better understand how distributed systems maintain reliability.</p>
+
+<p>Some key lessons include:</p>
+
+<p>Failures are inevitable in distributed systems.</p>
+
+<p>Retries can help recover from temporary issues but must be used carefully.</p>
+
+<p>Circuit breakers prevent failing services from causing cascading outages.</p>
+
+<p>Observability tools are essential for understanding system behavior.</p>
+
+<hr>
+
+<h1>Final Thoughts</h1>
+
+<p>This project is a simplified version of how real platforms maintain reliability.</p>
+
+<p>Companies like Uber, Netflix, and Amazon operate systems with hundreds or thousands of services. The principles used in this small project are the same ideas that help those systems stay stable at massive scale.</p>
+
+<p>Instead of trying to eliminate failure entirely, modern distributed systems are designed to <strong>detect failures quickly, isolate them, and recover automatically</strong>.</p>
+
+<p>That’s the concept this project was built to explore.</p>
+
+</body>
+</html>
