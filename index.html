@@ -73,7 +73,7 @@ You place an order.</p>
 
 <p>The goal of the project was simple: simulate failures in a distributed system and observe how the system reacts.</p>
 
-<hr>
+
 
 <h1>What Is a “Service” in Simple Terms?</h1>
 
@@ -98,8 +98,6 @@ You place an order.</p>
 
 <p>If one service fails, the others might also fail.</p>
 
-<hr>
-
 <h1>The Architecture of the Project</h1>
 
 <p>The project simulates a simplified distributed system made of several services that call each other.</p>
@@ -109,8 +107,6 @@ You place an order.</p>
 <p>Client → Core API → Service A → Service B → Chaos Service</p>
 
 <p>Each component represents a layer in a real distributed system.</p>
-
-<hr>
 
 <h1>Core API: The System Entry Point</h1>
 
@@ -131,8 +127,6 @@ If a request fails, the system automatically tries again.</p>
 If failures continue, the system temporarily stops calling the failing service to avoid overloading it.</p>
 
 <p>These techniques help systems stay stable even when dependencies become unreliable.</p>
-
-<hr>
 
 <h1>Service A: The Business Logic Layer</h1>
 
@@ -156,8 +150,6 @@ If failures continue, the system temporarily stops calling the failing service t
 
 <p>This prevents a failing service from bringing down the entire system.</p>
 
-<hr>
-
 <h1>Service B: Simulating an External Dependency</h1>
 
 <p>Service B represents a dependency that the system relies on but does not control.</p>
@@ -173,8 +165,6 @@ If failures continue, the system temporarily stops calling the failing service t
 <p>Because these systems are external, they can fail unpredictably.</p>
 
 <p>In this project, Service B calls another service called the <strong>Chaos Service</strong>, which is responsible for injecting failures.</p>
-
-<hr>
 
 <h1>Chaos Service: Simulating Real Production Failures</h1>
 
@@ -197,8 +187,6 @@ The dependency is completely unavailable.</p>
 
 <p>By injecting failures, we can observe how the system responds.</p>
 
-<hr>
-
 <h1>Observability: Seeing What Happens Inside the System</h1>
 
 <p>To understand how the system behaves during failures, I integrated <strong>Prometheus and Grafana</strong>.</p>
@@ -217,8 +205,6 @@ The dependency is completely unavailable.</p>
 
 <p>In real engineering teams, dashboards like these are critical for diagnosing production incidents.</p>
 
-<hr>
-
 <h1>Simulating Traffic with Load Testing</h1>
 
 <p>To make the system behave more realistically, I used a tool called <strong>k6</strong> to simulate multiple requests being sent to the system.</p>
@@ -226,8 +212,6 @@ The dependency is completely unavailable.</p>
 <p>This helps demonstrate how the system behaves under real traffic instead of a single request.</p>
 
 <p>When failures are injected, you can observe how retries increase and how the circuit breaker eventually protects the system from further calls.</p>
-
-<hr>
 
 <h1>What Is there to Learn from This Project?</h1>
 
@@ -242,8 +226,6 @@ The dependency is completely unavailable.</p>
 <p>Circuit breakers prevent failing services from causing cascading outages.</p>
 
 <p>Observability tools are essential for understanding system behavior.</p>
-
-<hr>
 
 <h1>Final Thoughts</h1>
 
