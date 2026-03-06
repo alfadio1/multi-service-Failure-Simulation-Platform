@@ -22,7 +22,7 @@ h1{
 }
 
 p{
-  margin:12px 0; 
+  margin:10px 0; 
 }
 
 ul{
@@ -38,12 +38,6 @@ strong{
   font-weight:600;
 }
 
-hr{
-  border:none;
-  height:1px;
-  background:#e6e6e6;
-  margin:40px 0; 
-}
 </style>
 
 </head>
@@ -84,10 +78,10 @@ You place an order.</p>
 <p>For example, in a ride-sharing app like Uber, there might be separate services for:</p>
 
 <ul>
-<li>ride requests</li>
-<li>pricing calculations</li>
-<li>payments</li>
-<li>notifications</li>
+  <li>ride requests</li>
+  <li>pricing calculations</li>
+  <li>payments</li>
+  <li>notifications</li>
 </ul>
 
 <p>Instead of one large program doing everything, each service handles its own responsibility.</p>
@@ -143,9 +137,9 @@ If failures continue, the system temporarily stops calling the failing service t
 <p>For example, imagine Uber trying to charge a credit card:</p>
 
 <ul>
-<li>the first request might fail</li>
-<li>the system retries automatically</li>
-<li>if the bank keeps failing, the system stops calling it</li>
+  <li>the first request might fail</li>
+  <li>the system retries automatically</li>
+  <li>if the bank keeps failing, the system stops calling it</li>
 </ul>
 
 <p>This prevents a failing service from bringing down the entire system.</p>
@@ -177,7 +171,7 @@ If failures continue, the system temporarily stops calling the failing service t
 <p>0% failure<br>
 Everything works normally.</p>
 
-<p>30% failure<br>
+<p><li>30% failure</li><br>
 Some requests fail while others succeed.</p>
 
 <p>100% failure<br>
