@@ -237,6 +237,66 @@ The dependency is completely unavailable.</p> </li></ul>
 <p>Instead of trying to eliminate failure entirely, modern distributed systems are designed to <strong>detect failures quickly, isolate them, and recover automatically</strong>.</p>
 
 <p>That’s the concept this project was built to explore.</p>
+
+<!-- Architecture Diagram -->
+<div style="text-align:center; margin-top:40px; margin-bottom:40px;">
+  <pre style="display:inline-block; text-align:left; font-family:monospace; font-size:14px; line-height:1.2;">
++------------------+
+|      Client      |
+|  (Browser/User)  |
++---------+--------+
+          |
+          v
++------------------+
+|     Core API     |
+|  Spring Boot     |
+| Retry + Circuit  |
+|     Breaker      |
++---------+--------+
+          |
+          v
++------------------+
+|     Service A    |
+|  Spring Boot     |
+| Business Logic   |
+| Retry + Circuit  |
++---------+--------+
+          |
+          v
++------------------+
+|     Service B    |
+|      FastAPI     |
+| External Service |
++---------+--------+
+          |
+          v
++------------------+
+|   Chaos Service  |
+|      FastAPI     |
+| Failure Injector |
+| Error / Latency  |
++---------+--------+
+          |
+          v
+ (Failure propagates upward)
+
+------------------------------------------------------------
+
+   +----------------+       +----------------+
+   |   Prometheus   | ----> |    Grafana     |
+   | Metrics Scrape |       | Visualization  |
+   +----------------+       +----------------+
+
+           ^
+           |
+     Metrics from
+Core API + Service A
+  </pre>
+</div>
+
+<!-- Bottom watermark -->
+<div class="watermark">Authored by Alpha Diallo</div>
+
 <div class="watermark">Authored by Alpha Diallo</div>
 </body>
 </html>
